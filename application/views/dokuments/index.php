@@ -47,7 +47,7 @@
         <?php echo show_messaga_dialog();?>
         <div class="row">
           <div class="col-md-12">
-            <a class="btn btn-primary btn-block margin-bottom" href="<?php echo site_url('arsips/add'); ?>">Tambah Dokumen</a>
+            <a class="btn btn-primary btn-block margin-bottom" href="<?php echo site_url('dokuments/tambah'); ?>">Tambah Dokumen</a>
             <div class="box">
               <div class="box-body">
                 <table id="example2" class="table table-strip table-hover">
@@ -77,10 +77,10 @@
                             </a>
                             <ul class="dropdown-menu pull-right">
                               <?php if(get_session_name('status') == '1'){?>
-                              <li><a onclick="javascript: if(!confirm('Anda yakin mau hapus data?')) return false;" href="<?php echo site_url('arsips/hapus/' . $row->id); ?>"><i class="fa fa-trash fa-fw"></i> Delete</a></li>
+                              <li><a onclick="javascript: if(!confirm('Anda yakin mau hapus data?')) return false;" href="<?php echo site_url('dokuments/hapus/' . $row->id); ?>"><i class="fa fa-trash fa-fw"></i> Hapus</a></li>
                             <?php }?>
-                              <li><a href="<?php echo base_url('/assets/uploads/arsip/'.$row->name_file); ?>" target="_blank"><i class="fa fa-search fa-fw"></i> Preview</a></li>
-                              <li><a href="<?php echo site_url('arsips/download/' . $row->id); ?>"><i class="fa fa-download fa-fw"></i> Download</a></li>
+                              <li><a href="<?php echo base_url('/assets/uploads/arsip/'.$row->name_file); ?>" target="_blank"><i class="fa fa-search fa-fw"></i> Lihat</a></li>
+                              <li><a href="<?php echo site_url('dokuments/download/' . $row->id); ?>"><i class="fa fa-download fa-fw"></i> Unduh</a></li>
                             </ul>
                           </div>
                         </td>

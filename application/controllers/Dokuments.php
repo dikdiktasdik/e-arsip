@@ -16,7 +16,7 @@ class Dokuments extends CI_Controller {
 
     $this->load->model('Dokument');
     $this->load->model('Kelompok');
-    $this->load->model('Lemari');
+    $this->load->model('Rak');
     $this->load->model('Box');
     $this->load->helper('download');
   }
@@ -31,14 +31,14 @@ class Dokuments extends CI_Controller {
     $this->load->view('dokuments/index', $data);
   }
 
-  function add(){
+  function tambah(){
     $options1 = $this->Kelompok->get_all_record_drop();
     $options2 = $this->Rak->get_all_record_drop();
     $options3 = $this->Box->get_all_record_drop();
 
     $jenis = array('MASUK' => 'MASUK', 'KELUAR' => 'KELUAR');
 
-    $data['form_action'] = site_url('dokuments/save/');
+    $data['form_action'] = site_url('dokuments/simpan/');
     $data['nomor'] = array('name' => 'nomor', 'class' => 'form-control', 'required' => 'required');
     $data['title'] = array('name' => 'title', 'class' => 'form-control', 'required' => 'required');
     $data['deskripsi'] = array('name' => 'deskripsi', 'class' => 'form-control');
@@ -51,7 +51,7 @@ class Dokuments extends CI_Controller {
     $this->load->view('dokuments/form', $data);
   }
 
-  function save(){
+  function simpan(){
     $result = $this->Dokument->do_upload_and_insert();
     message_dialog('success', 'Sukses!', $result);
     redirect('dokuments/add');
@@ -78,10 +78,6 @@ class Dokuments extends CI_Controller {
     $this->Dokument->deleted($id);
     message_dialog('success', 'Sukses!', 'Data Berhasil dihapus.');
     redirect('dokuments');
-  }
-
-  function chart(){
-    $this->load->view('dokuments/chart');
   }
 
   function get_load_data() {

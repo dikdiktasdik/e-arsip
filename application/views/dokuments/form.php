@@ -40,7 +40,7 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Form Arsip
+          Form Tambah Arsip
           <small></small>
         </h1>
       </section>
@@ -114,7 +114,7 @@
                 </div><!-- /.box-body -->
                 <div class="box-footer">
                   <button class="btn btn-primary" type="submit">Save</button>
-                  <a href="<?php echo site_url('arsips');?>" class="btn btn-danger">Back</a>
+                  <a href="<?php echo site_url('dokuments');?>" class="btn btn-danger">Back</a>
                 </div>
               </form>
             </div><!-- /.box-body -->
