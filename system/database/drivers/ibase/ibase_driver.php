@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	https://codeigniter.com
+ * @link	http://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
  */
@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Drivers
  * @category	Database
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/database/
+ * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_ibase_driver extends CI_DB {
 
@@ -126,7 +126,7 @@ class CI_DB_ibase_driver extends CI_DB {
 	 */
 	protected function _execute($sql)
 	{
-		return ibase_query(isset($this->_ibase_trans) ? $this->_ibase_trans : $this->conn_id, $sql);
+		return ibase_query($this->conn_id, $sql);
 	}
 
 	// --------------------------------------------------------------------
@@ -134,16 +134,24 @@ class CI_DB_ibase_driver extends CI_DB {
 	/**
 	 * Begin Transaction
 	 *
+	 * @param	bool	$test_mode
 	 * @return	bool
 	 */
-	protected function _trans_begin()
+	public function trans_begin($test_mode = FALSE)
 	{
-		if (($trans_handle = ibase_trans($this->conn_id)) === FALSE)
+		// When transactions are nested we only begin/commit/rollback the outermost ones
+		if ( ! $this->trans_enabled OR $this->_trans_depth > 0)
 		{
-			return FALSE;
+			return TRUE;
 		}
 
-		$this->_ibase_trans = $trans_handle;
+		// Reset the transaction failure flag.
+		// If the $test_mode flag is set to TRUE transactions will be rolled back
+		// even if the queries produce a successful result.
+		$this->_trans_failure = ($test_mode === TRUE);
+
+		$this->_ibase_trans = ibase_trans($this->conn_id);
+
 		return TRUE;
 	}
 
@@ -154,15 +162,15 @@ class CI_DB_ibase_driver extends CI_DB {
 	 *
 	 * @return	bool
 	 */
-	protected function _trans_commit()
+	public function trans_commit()
 	{
-		if (ibase_commit($this->_ibase_trans))
+		// When transactions are nested we only begin/commit/rollback the outermost ones
+		if ( ! $this->trans_enabled OR $this->_trans->depth > 0)
 		{
-			$this->_ibase_trans = NULL;
 			return TRUE;
 		}
 
-		return FALSE;
+		return ibase_commit($this->_ibase_trans);
 	}
 
 	// --------------------------------------------------------------------
@@ -172,15 +180,15 @@ class CI_DB_ibase_driver extends CI_DB {
 	 *
 	 * @return	bool
 	 */
-	protected function _trans_rollback()
+	public function trans_rollback()
 	{
-		if (ibase_rollback($this->_ibase_trans))
+		// When transactions are nested we only begin/commit/rollback the outermost ones
+		if ( ! $this->trans_enabled OR $this->_trans_depth > 0)
 		{
-			$this->_ibase_trans = NULL;
 			return TRUE;
 		}
 
-		return FALSE;
+		return ibase_rollback($this->_ibase_trans);
 	}
 
 	// --------------------------------------------------------------------
@@ -294,7 +302,7 @@ class CI_DB_ibase_driver extends CI_DB {
 	 * Error
 	 *
 	 * Returns an array containing code and message of the last
-	 * database error that has occurred.
+	 * database error that has occured.
 	 *
 	 * @return	array
 	 */
@@ -379,23 +387,6 @@ class CI_DB_ibase_driver extends CI_DB {
 		}
 
 		return preg_replace('`SELECT`i', 'SELECT '.$select, $sql, 1);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Insert batch statement
-	 *
-	 * Generates a platform-specific insert string from the supplied data.
-	 *
-	 * @param	string	$table	Table name
-	 * @param	array	$keys	INSERT keys
-	 * @param	array	$values	INSERT values
-	 * @return	string|bool
-	 */
-	protected function _insert_batch($table, $keys, $values)
-	{
-		return ($this->db_debug) ? $this->display_error('db_unsupported_feature') : FALSE;
 	}
 
 	// --------------------------------------------------------------------

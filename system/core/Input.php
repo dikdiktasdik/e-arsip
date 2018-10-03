@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	https://codeigniter.com
+ * @link	http://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	Input
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/libraries/input.html
+ * @link		http://codeigniter.com/user_guide/libraries/input.html
  */
 class CI_Input {
 
@@ -137,7 +137,7 @@ class CI_Input {
 	 */
 	public function __construct()
 	{
-		$this->_allow_get_array		= (config_item('allow_get_array') !== FALSE);
+		$this->_allow_get_array		= (config_item('allow_get_array') === TRUE);
 		$this->_enable_xss		= (config_item('global_xss_filtering') === TRUE);
 		$this->_enable_csrf		= (config_item('csrf_protection') === TRUE);
 		$this->_standardize_newlines	= (bool) config_item('standardize_newlines');
@@ -152,12 +152,6 @@ class CI_Input {
 
 		// Sanitize global arrays
 		$this->_sanitize_globals();
-
-		// CSRF Protection check
-		if ($this->_enable_csrf === TRUE && ! is_cli())
-		{
-			$this->security->csrf_verify();
-		}
 
 		log_message('info', 'Input Class Initialized');
 	}
@@ -359,7 +353,7 @@ class CI_Input {
 	 * @param	bool		$httponly	Whether to only makes the cookie accessible via HTTP (no javascript)
 	 * @return	void
 	 */
-	public function set_cookie($name, $value = '', $expire = '', $domain = '', $path = '/', $prefix = '', $secure = NULL, $httponly = NULL)
+	public function set_cookie($name, $value = '', $expire = '', $domain = '', $path = '/', $prefix = '', $secure = FALSE, $httponly = FALSE)
 	{
 		if (is_array($name))
 		{
@@ -388,13 +382,15 @@ class CI_Input {
 			$path = config_item('cookie_path');
 		}
 
-		$secure = ($secure === NULL && config_item('cookie_secure') !== NULL)
-			? (bool) config_item('cookie_secure')
-			: (bool) $secure;
+		if ($secure === FALSE && config_item('cookie_secure') === TRUE)
+		{
+			$secure = config_item('cookie_secure');
+		}
 
-		$httponly = ($httponly === NULL && config_item('cookie_httponly') !== NULL)
-			? (bool) config_item('cookie_httponly')
-			: (bool) $httponly;
+		if ($httponly === FALSE && config_item('cookie_httponly') !== FALSE)
+		{
+			$httponly = config_item('cookie_httponly');
+		}
 
 		if ( ! is_numeric($expire))
 		{
@@ -517,9 +513,9 @@ class CI_Input {
 					if ($separator === ':')
 					{
 						$netaddr = explode(':', str_replace('::', str_repeat(':', 9 - substr_count($netaddr, ':')), $netaddr));
-						for ($j = 0; $j < 8; $j++)
+						for ($i = 0; $i < 8; $i++)
 						{
-							$netaddr[$j] = intval($netaddr[$j], 16);
+							$netaddr[$i] = intval($netaddr[$i], 16);
 						}
 					}
 					else
@@ -604,7 +600,7 @@ class CI_Input {
 		{
 			$_GET = array();
 		}
-		elseif (is_array($_GET))
+		elseif (is_array($_GET) && count($_GET) > 0)
 		{
 			foreach ($_GET as $key => $val)
 			{
@@ -613,7 +609,7 @@ class CI_Input {
 		}
 
 		// Clean $_POST Data
-		if (is_array($_POST))
+		if (is_array($_POST) && count($_POST) > 0)
 		{
 			foreach ($_POST as $key => $val)
 			{
@@ -622,7 +618,7 @@ class CI_Input {
 		}
 
 		// Clean $_COOKIE Data
-		if (is_array($_COOKIE))
+		if (is_array($_COOKIE) && count($_COOKIE) > 0)
 		{
 			// Also get rid of specially treated cookies that might be set by a server
 			// or silly application, that are of no use to a CI application anyway
@@ -650,6 +646,12 @@ class CI_Input {
 
 		// Sanitize PHP_SELF
 		$_SERVER['PHP_SELF'] = strip_tags($_SERVER['PHP_SELF']);
+
+		// CSRF Protection check
+		if ($this->_enable_csrf === TRUE && ! is_cli())
+		{
+			$this->security->csrf_verify();
+		}
 
 		log_message('debug', 'Global POST, GET and COOKIE data sanitized');
 	}
@@ -758,32 +760,30 @@ class CI_Input {
 		// If header is already defined, return it immediately
 		if ( ! empty($this->headers))
 		{
-			return $this->_fetch_from_array($this->headers, NULL, $xss_clean);
+			return $this->headers;
 		}
 
 		// In Apache, you can simply call apache_request_headers()
 		if (function_exists('apache_request_headers'))
 		{
-			$this->headers = apache_request_headers();
+			return $this->headers = apache_request_headers();
 		}
-		else
+
+		$this->headers['Content-Type'] = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : @getenv('CONTENT_TYPE');
+
+		foreach ($_SERVER as $key => $val)
 		{
-			isset($_SERVER['CONTENT_TYPE']) && $this->headers['Content-Type'] = $_SERVER['CONTENT_TYPE'];
-
-			foreach ($_SERVER as $key => $val)
+			if (sscanf($key, 'HTTP_%s', $header) === 1)
 			{
-				if (sscanf($key, 'HTTP_%s', $header) === 1)
-				{
-					// take SOME_HEADER and turn it into Some-Header
-					$header = str_replace('_', ' ', strtolower($header));
-					$header = str_replace(' ', '-', ucwords($header));
+				// take SOME_HEADER and turn it into Some-Header
+				$header = str_replace('_', ' ', strtolower($header));
+				$header = str_replace(' ', '-', ucwords($header));
 
-					$this->headers[$header] = $_SERVER[$key];
-				}
+				$this->headers[$header] = $this->_fetch_from_array($_SERVER, $key, $xss_clean);
 			}
 		}
 
-		return $this->_fetch_from_array($this->headers, NULL, $xss_clean);
+		return $this->headers;
 	}
 
 	// --------------------------------------------------------------------
@@ -803,7 +803,7 @@ class CI_Input {
 
 		if ( ! isset($headers))
 		{
-			empty($this->headers) && $this->request_headers();
+			empty($this->headers) OR $this->request_headers();
 			foreach ($this->headers as $key => $value)
 			{
 				$headers[strtolower($key)] = $value;

@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	https://codeigniter.com
+ * @link	http://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
  */
@@ -91,23 +91,15 @@ class CI_Cache_redis extends CI_Driver
 	 */
 	public function __construct()
 	{
-		if ( ! $this->is_supported())
-		{
-			log_message('error', 'Cache: Failed to create Redis object; extension not loaded?');
-			return;
-		}
-
+		$config = array();
 		$CI =& get_instance();
 
 		if ($CI->config->load('redis', TRUE, TRUE))
 		{
-			$config = array_merge(self::$_default_config, $CI->config->item('redis'));
-		}
-		else
-		{
-			$config = self::$_default_config;
+			$config = $CI->config->item('redis');
 		}
 
+		$config = array_merge(self::$_default_config, $config);
 		$this->_redis = new Redis();
 
 		try
@@ -123,17 +115,17 @@ class CI_Cache_redis extends CI_Driver
 
 			if ( ! $success)
 			{
-				log_message('error', 'Cache: Redis connection failed. Check your configuration.');
-			}
-
-			if (isset($config['password']) && ! $this->_redis->auth($config['password']))
-			{
-				log_message('error', 'Cache: Redis authentication failed.');
+				throw new RuntimeException('Cache: Redis connection failed. Check your configuration.');
 			}
 		}
 		catch (RedisException $e)
 		{
-			log_message('error', 'Cache: Redis connection refused ('.$e->getMessage().')');
+			throw new RuntimeException('Cache: Redis connection refused ('.$e->getMessage().')');
+		}
+
+		if (isset($config['password']) && ! $this->_redis->auth($config['password']))
+		{
+			throw new RuntimeException('Cache: Redis authentication failed.');
 		}
 
 		// Initialize the index of serialized values.
@@ -146,7 +138,7 @@ class CI_Cache_redis extends CI_Driver
 	/**
 	 * Get cache
 	 *
-	 * @param	string	$key	Cache ID
+	 * @param	string	Cache ID
 	 * @return	mixed
 	 */
 	public function get($key)
@@ -198,7 +190,7 @@ class CI_Cache_redis extends CI_Driver
 	/**
 	 * Delete from cache
 	 *
-	 * @param	string	$key	Cache key
+	 * @param	string	Cache key
 	 * @return	bool
 	 */
 	public function delete($key)
@@ -263,9 +255,9 @@ class CI_Cache_redis extends CI_Driver
 	/**
 	 * Get cache driver info
 	 *
-	 * @param	string	$type	Not supported in Redis.
-	 *				Only included in order to offer a
-	 *				consistent cache API.
+	 * @param	string	Not supported in Redis.
+	 *			Only included in order to offer a
+	 *			consistent cache API.
 	 * @return	array
 	 * @see		Redis::info()
 	 */
@@ -279,7 +271,7 @@ class CI_Cache_redis extends CI_Driver
 	/**
 	 * Get cache metadata
 	 *
-	 * @param	string	$key	Cache key
+	 * @param	string	Cache key
 	 * @return	array
 	 */
 	public function get_metadata($key)
@@ -306,7 +298,13 @@ class CI_Cache_redis extends CI_Driver
 	 */
 	public function is_supported()
 	{
-		return extension_loaded('redis');
+		if ( ! extension_loaded('redis'))
+		{
+			log_message('debug', 'The Redis extension must be loaded to use Redis cache.');
+			return FALSE;
+		}
+
+		return TRUE;
 	}
 
 	// ------------------------------------------------------------------------
