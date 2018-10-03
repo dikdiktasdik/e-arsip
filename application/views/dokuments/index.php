@@ -62,7 +62,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach ($arsips->result() as $row) { ?>
+                    <?php foreach ($dokuments->result() as $row) { ?>
                       <tr>
                         <td><?php echo $row->nomor;?></td>
                         <td><?php echo $row->title;?></td>
