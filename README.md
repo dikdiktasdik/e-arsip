@@ -1,5 +1,5 @@
-# e-arsip
-e-Arsip adalah arsip yang diciptakan (dibuat atau diterima dan disimpan) dalam format elektronik. Se-sederhana mungkin mudah untuk digunakan.
+# Project
+e-Arsip adalah arsip yang diciptakan (dibuat atau diterima dan disimpan) dalam format elektronik. Se-sederhana mungkin mudah untuk digunakan penambahan data arsip, koreksi dan pencarian data arsip maupun fisik arsip.
 
 # Fitur
 Fitur pada Aplikasi ini meliputi:
