@@ -31,6 +31,11 @@ class Dokument extends CI_Model {
     return $query;
   }
 
+  function get_record($id){
+    $query = $this->db->query("SELECT dokuments.*, kelompok.ket, lemari.nama as nama_lemari FROM dokuments, kelompok, lemari WHERE kelompok.id = dokuments.kelompok_id and lemari.kode = dokuments.kode_lemari and dokuments.id = '".$id."'");
+    return $query;
+  }
+
   function do_upload_and_insert() {
     $name_file = rand(0123456798, 987654321)."_".date('Ymd');
     //$file_type = $name_file . $_FILES['userfile']['type'];

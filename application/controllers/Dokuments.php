@@ -54,7 +54,7 @@ class Dokuments extends CI_Controller {
   function simpan(){
     $result = $this->Dokument->do_upload_and_insert();
     message_dialog('success', 'Sukses!', $result);
-    redirect('dokuments/add');
+    redirect('dokuments/tambah');
   }
 
   function edit($id){
@@ -88,5 +88,20 @@ class Dokuments extends CI_Controller {
       //array_push($dataPoints, array("x"=> $row->id, "y"=> $row->jml));
     }
     echo json_encode($reminder, JSON_NUMERIC_CHECK);
+  }
+
+  function detail($id){
+    $query = $this->Dokument->get_record($id);
+    $row = $query->row();
+    $data['nomor'] = $row->nomor;
+    $data['title'] = $row->title;
+    $data['deskripsi'] = $row->deskripsi;
+    $data['name_file'] = $row->name_file;
+    $data['tgl_surat']=$row->tgl_surat;
+    $data['jenis'] = $row->jenis;
+    $data['lemari'] = $row->nama_lemari;
+    $data['kelompok'] = $row->ket;
+    $data['kotak'] = $row->kode_kotak;
+    $this->load->view('dokuments/detail', $data);
   }
 }

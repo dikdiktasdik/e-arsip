@@ -1,5 +1,5 @@
 # e-arsip
-e-Arsip adalah arsip yang diciptakan (dibuat atau diterima dan disimpan) dalam format elektronik.
+e-Arsip adalah arsip yang diciptakan (dibuat atau diterima dan disimpan) dalam format elektronik. Se-sederhana mungkin mudah untuk digunakan.
 
 # Fitur
 Fitur pada Aplikasi ini meliputi:
@@ -28,5 +28,8 @@ Fitur pada Aplikasi ini meliputi:
 - Jika tidak menggunakan Git, silakan **Download Zip** dan extract pada direktori web server (misal: xampp/htdocs)
 - Import file database pada **Folder DB**
 - Koreksi file `application/config/database.php` sesuaikan user dan password dengan `localhost`.
+# Login Admin
+`Username: admin
+Password: admin`
 # Lisensi
 Project e-Arsip merupakan software Pengarsipan Dokument Surat Masuk atau Keluar yang free dan open source.

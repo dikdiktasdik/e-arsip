@@ -131,8 +131,8 @@ function time_elapsed_string($datetime, $full = false) {
 
 function count_arsip() {
   $CI = &get_instance();
-  $CI->load->model('Arsip');
-  $result = $CI->Arsip->get_count_all();
+  $CI->load->model('Dokument');
+  $result = $CI->Dokument->get_count_all();
   return $result;
 }
 

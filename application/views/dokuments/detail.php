@@ -27,6 +27,7 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
@@ -38,61 +39,73 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Daftar Arsip
+          Detail Arsip
         </h1>
       </section>
 
       <!-- Main content -->
       <section class="content">
-        <?php echo show_messaga_dialog();?>
         <div class="row">
-          <div class="col-md-12">
-            <a class="btn btn-primary btn-block margin-bottom" href="<?php echo site_url('dokuments/tambah'); ?>">Tambah Dokument</a>
+          <div class="col-md-6">
             <div class="box">
               <div class="box-body">
-                <table id="example2" class="table table-strip table-hover">
-                  <thead>
-                    <tr>
-                      <th>Nomor</th>
-                      <th>Judul</th>
-                      <th>Status</th>
-                      <th>Kelompok</th>
-                      <th>Tgl Surat</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php foreach ($dokuments->result() as $row) { ?>
-                      <tr>
-                        <td><?php echo $row->nomor;?></td>
-                        <td><?php echo $row->title;?></td>
-                        <td><?php echo $row->jenis;?></td>
-                        <td><?php echo $row->ket;?></td>
-                        <td><?php echo DateToIndo($row->tgl_surat);?></td>
-                        <td width="50">
-                          <div class="btn-group">
-                            <a href="#" data-toggle="dropdown" class="btn btn-info btn-mini dropdown-toggle">
-                              Action
-                              <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu pull-right">
-                              <?php if(get_session_name('status') == '1'){?>
-                              <li><a onclick="javascript: if(!confirm('Anda yakin mau hapus data?')) return false;" href="<?php echo site_url('dokuments/hapus/' . $row->id); ?>"><i class="fa fa-trash fa-fw"></i> Hapus</a></li>
-                            <?php }?>
-                              <li><a href="<?php echo base_url('/assets/uploads/dokuments/'.$row->name_file); ?>" target="_blank"><i class="fa fa-search fa-fw"></i> Lihat Dokument</a></li>
-                              <li><a href="<?php echo site_url('dokuments/detail/'.$row->id); ?>" target="_blank"><i class="fa fa-file fa-fw"></i> Detail Dokument</a></li>
-                              <li><a href="<?php echo site_url('dokuments/download/' . $row->id); ?>"><i class="fa fa-download fa-fw"></i> Unduh</a></li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                    <?php } ?>
-                  </tbody>
+               <iframe src="<?php echo base_url('/assets/uploads/dokuments/'.$name_file); ?>" width="750" height="800" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+              </div><!-- /.box-body -->
+            </div><!-- /.box -->
+          </div><!-- /.col -->
+
+          <div class="col-md-6">
+            <div class="box">
+              <div class="box-body">
+                <table class="table table-bordered" style="font-size: 18px;">
+                  <tr>
+                    <td width="150">Nomor Surat</td>
+                    <td>:</td>
+                    <td><?php echo $nomor;?></td>
+                  </tr>
+                  <tr>
+                    <td>Nama Surat</td>
+                    <td>:</td>
+                    <td><?php echo $title;?></td>
+                  </tr>
+                  <tr>
+                    <td>Tanggal Surat</td>
+                    <td>:</td>
+                    <td><?php echo DateToIndo($tgl_surat);?></td>
+                  </tr>
+                  <tr>
+                    <td>Jenis Surat</td>
+                    <td>:</td>
+                    <td><?php echo $jenis;?></td>
+                  </tr>
+                  <tr>
+                    <td>Lemari</td>
+                    <td>:</td>
+                    <td><?php echo $lemari;;?></td>
+                  </tr>
+                  <tr>
+                    <td>Kotak</td>
+                    <td>:</td>
+                    <td><?php echo $kotak;?></td>
+                  </tr>
+                  <tr>
+                    <td>Kelompok</td>
+                    <td>:</td>
+                    <td><?php echo $kelompok;?></td>
+                  </tr>
+
+                  <tr>
+                    <td>Deskripsi</td>
+                    <td>:</td>
+                    <td><?php echo $deskripsi;?></td>
+                  </tr>
+
                 </table>
               </div><!-- /.box-body -->
             </div><!-- /.box -->
           </div><!-- /.col -->
         </div>
+
       </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
 

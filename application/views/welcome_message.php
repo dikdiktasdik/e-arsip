@@ -58,7 +58,7 @@
               <span class="info-box-icon bg-yellow"><i class="fa fa-book"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">ARSIP</span>
-                <span class="info-box-number"><?php //echo count_arsip();?></span>
+                <span class="info-box-number"><?php echo count_arsip();?></span>
               </div><!-- /.info-box-content -->
             </div><!-- /.info-box -->
           </div>
@@ -220,8 +220,7 @@
 
       //load data todo every 10second
       setInterval(function () {
-        //load_do_task();
-        load_data();
+        //load_data();
         cpu_traffic();
       }, 20000);
 
