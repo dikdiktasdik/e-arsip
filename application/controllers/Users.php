@@ -18,7 +18,7 @@ class Users extends CI_Controller {
     redirect_logged_without_admin();
 
     $data['title'] = '';
-    $data['query'] = $this->user->get_all_record();
+    $data['query'] = $this->User->get_all_record();
     $this->load->view('users/index', $data);
   }
 
@@ -53,7 +53,7 @@ class Users extends CI_Controller {
 
     $options = $data = array('2' => 'USER', '1' => 'ADMINISTRATOR');
 
-    $query = $this->user->get_record($id);
+    $query = $this->User->get_record($id);
     $row = $query->row();
     $data['form_action'] = site_url('users/update/'.$id);
     $data['username'] = array('name' => 'username', 'class' => 'form-control', 'required' => 'required', 'value' => $row->username);
@@ -70,13 +70,13 @@ class Users extends CI_Controller {
   }
 
   function update($id) {
-    $this->user->update($id, $this->user_id);
+    $this->User->update($id, $this->user_id);
     redirect('users');
   }
 
   function save() {
-    if(!$this->user->get_exist_record_by_username()){
-      $this->user->insert($this->user_id);
+    if(!$this->User->get_exist_record_by_username()){
+      $this->User->insert($this->user_id);
       message_dialog('success', 'Sukses!', 'Data Berhasil disimpan.');
       redirect('users');
     }else{
@@ -86,7 +86,7 @@ class Users extends CI_Controller {
   }
 
   function hapus($id) {
-    $this->user->del($id);
+    $this->User->del($id);
     message_dialog('success', 'Sukses!', 'Data Berhasil dihapus.');
     redirect('users');
   }

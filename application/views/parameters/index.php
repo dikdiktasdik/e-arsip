@@ -46,20 +46,20 @@
                 <?php echo show_messaga_dialog();?>
                     <div class="row">
                         <div class="col-md-12">
-                            <a class="btn btn-primary btn-block margin-bottom" href="<?php echo site_url('parameters/add'); ?>">Add</a>
+                            <a class="btn btn-primary btn-block margin-bottom" href="<?php echo site_url('parameters/tambah'); ?>">Tambah Pengaturan</a>
                             <div class="box">
                                 <div class="box-body">
                                     <table id="example2" class="table table-strip table-hover">
                                         <thead>
                                             <tr>
-                                                <th>KEY</th>                                                
+                                                <th>KEY</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($query->result() as $row) { ?>
                                                 <tr>
-                                                    <td title="<?php echo $row->val;?>"><?php echo $row->key;?></td>                                                    
+                                                    <td title="<?php echo $row->val;?>"><?php echo $row->key;?></td>
                                                     <td width="50">
                                                         <div class="btn-group">
                                                             <a href="#" data-toggle="dropdown" class="btn btn-info btn-mini dropdown-toggle">
@@ -77,7 +77,7 @@
                                         </tbody>
                                     </table>
                                 </div><!-- /.box-body -->
-                            </div><!-- /.box -->                           
+                            </div><!-- /.box -->
                         </div><!-- /.col -->
                     </div>
                 </section><!-- /.content -->
