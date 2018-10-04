@@ -18,4 +18,8 @@ class Welcome extends CI_Controller {
     function cpu_traffic() {
         echo implode(' ', get_server_load()) . ' <small>%</small>';
     }
+
+    function pencarian(){
+      $this->load->view('pencarian', TRUE);
+    }
 }
