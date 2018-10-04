@@ -90,7 +90,7 @@
                 <ul class="treeview-menu">
                     <li><a href="<?php echo site_url('dokuments/tambah'); ?>"><i class="fa fa-pencil-square-o"></i> Tambah Arsip</a></li>
                     <li><a href="<?php echo site_url('dokuments'); ?>"><i class="fa fa-list-alt"></i> Daftar Arsip</a></li>
-                    <li><a href="<?php echo site_url('dokuments'); ?>"><i class="fa fa-object-group"></i> Kelompok</a></li>
+                    <li><a href="<?php echo site_url('kelompok'); ?>"><i class="fa fa-object-group"></i> Kelompok</a></li>
                     <li><a href="<?php echo site_url('lemari'); ?>"><i class="fa fa-building"></i> Lemari</a></li>
                     <li><a href="<?php echo site_url('kotak'); ?>"><i class="fa fa-cube"></i> Kotak</a></li>
                 </ul>

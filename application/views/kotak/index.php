@@ -46,7 +46,7 @@
         <?php echo show_messaga_dialog();?>
         <div class="row">
           <div class="col-md-12">
-            <a class="btn btn-primary btn-block margin-bottom" href="<?php echo site_url('kotak/add'); ?>">Tambah Kotak</a>
+            <a class="btn btn-primary btn-block margin-bottom" href="<?php echo site_url('kotak/tambah'); ?>">Tambah Kotak</a>
             <div class="box">
               <div class="box-body">
                 <table id="example2" class="table table-strip table-hover">

@@ -76,7 +76,7 @@ class Dokuments extends CI_Controller {
 
   function hapus($id){
     $this->Dokument->deleted($id);
-    message_dialog('success', 'Sukses!', 'Data Berhasil dihapus.');
+    message_dialog('success', 'Sukses!', get_val_setting('PESAN_DELETE_DATA'));
     redirect('dokuments');
   }
 

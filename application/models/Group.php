@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Kelompok extends CI_Model {
+class Group extends CI_Model {
 
   public $table = 'kelompok';
 
@@ -46,5 +46,9 @@ class Kelompok extends CI_Model {
 
     $this->db->where('id', $id);
     $this->db->update($this->table, $data);
+  }
+
+  function del($id){
+    $this->db->delete($this->table, array('id' => $id));
   }
 }

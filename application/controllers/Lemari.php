@@ -16,9 +16,9 @@ class Lemari extends CI_Controller {
     $this->load->view('lemari/index', $data);
   }
 
-  function add(){
-    $data['form_action'] = site_url('lemari/save/');
-    $data['kode'] = array('name' => 'kode', 'value' => $this->lemari->auto_number('LR'),  'class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly');
+  function tambah(){
+    $data['form_action'] = site_url('lemari/simpan/');
+    $data['kode'] = array('name' => 'kode', 'value' => $this->Rak->auto_number('LR'),  'class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly');
     $data['nama'] = array('name' => 'nama', 'class' => 'form-control', 'required' => 'required');
     $data['lokasi'] = array('name' => 'lokasi', 'class' => 'form-control', 'required' => 'required');
     $data['ruangan'] = array('name' => 'ruangan', 'class' => 'form-control', 'required' => 'required');
@@ -26,8 +26,9 @@ class Lemari extends CI_Controller {
     $this->load->view('lemari/form', $data);
   }
 
-  function save(){
+  function simpan(){
     $this->Rak->insert();
+    message_dialog('success', 'Sukses!', get_val_setting('PESAN_INSERT_DATA'));
     redirect('lemari');
   }
 
@@ -35,7 +36,7 @@ class Lemari extends CI_Controller {
     $query = $this->Rak->get_record_by_id($kode);
     $row = $query->row();
 
-    $data['form_action'] = site_url('lemari/update/'.$id);
+    $data['form_action'] = site_url('lemari/update/'.$kode);
     $data['kode'] = array('name' => 'kode', 'value' => $row->kode,  'class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly');
     $data['nama'] = array('name' => 'nama', 'value' => $row->nama, 'class' => 'form-control', 'required' => 'required');
     $data['lokasi'] = array('name' => 'lokasi', 'value' => $row->lokasi, 'class' => 'form-control', 'required' => 'required');
@@ -44,8 +45,15 @@ class Lemari extends CI_Controller {
     $this->load->view('lemari/form', $data);
   }
 
-  function update($id){
-    $this->Rak->update($id);
+  function update($kode){
+    $this->Rak->update($kode);
+    message_dialog('success', 'Sukses!', get_val_setting('PESAN_UPDATE_DATA'));
+    redirect('lemari');
+  }
+
+  function hapus($kode){
+    $this->Rak->del($kode);
+    message_dialog('success', 'Sukses!', get_val_setting('PESAN_DELETE_DATA'));
     redirect('lemari');
   }
 

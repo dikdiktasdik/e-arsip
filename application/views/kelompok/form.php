@@ -38,7 +38,7 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Form Lemari
+          Form Kelompok
           <small></small>
         </h1>
       </section>
@@ -54,27 +54,14 @@
                   <div class="box-body">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label>Kode</label>
-                        <?php echo form_input($kode);?>
-                      </div>
-                      <div class="form-group">
                         <label>Nama</label>
-                        <?php echo form_input($nama);?>
+                        <?php echo form_input($ket);?>
                       </div>
-                      <div class="form-group">
-                        <label>Lokasi</label>
-                        <?php echo form_input($lokasi);?>
-                      </div>
-                      <div class="form-group">
-                        <label>Ruangan</label>
-                        <?php echo form_input($ruangan);?>
-                      </div>
-
                     </div>
                   </div><!-- /.box-body -->
                   <div class="box-footer">
                     <button class="btn btn-primary" type="submit">Save</button>
-                    <a href="<?php echo site_url('lemari');?>" class="btn btn-danger">Cancel</a>
+                    <a href="<?php echo site_url('kelompok');?>" class="btn btn-danger">Cancel</a>
                   </div>
                 </form>
               </div><!-- /.box-body -->

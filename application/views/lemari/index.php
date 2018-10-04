@@ -46,7 +46,7 @@
         <?php echo show_messaga_dialog();?>
         <div class="row">
           <div class="col-md-12">
-            <a class="btn btn-primary btn-block margin-bottom" href="<?php echo site_url('lemaris/add'); ?>">Tambah Lemari</a>
+            <a class="btn btn-primary btn-block margin-bottom" href="<?php echo site_url('lemari/tambah'); ?>">Tambah Lemari</a>
             <div class="box">
               <div class="box-body">
                 <table id="example2" class="table table-strip table-hover">
@@ -72,8 +72,8 @@
                               <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu pull-right">
-                              <li><a href="<?php echo site_url('categories/edit/' . $row->kode); ?>"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
-                              <li><a onclick="javascript: if(!confirm('Anda yakin mau hapus data?')) return false;" href="<?php echo site_url('categories/hapus/' . $row->kode); ?>"><i class="fa fa-trash fa-fw"></i> Delete</a></li>
+                              <li><a href="<?php echo site_url('lemari/edit/' . $row->kode); ?>"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+                              <li><a onclick="javascript: if(!confirm('Anda yakin mau hapus data?')) return false;" href="<?php echo site_url('lemari/hapus/' . $row->kode); ?>"><i class="fa fa-trash fa-fw"></i> Delete</a></li>
                             </ul>
                           </div>
                         </td>

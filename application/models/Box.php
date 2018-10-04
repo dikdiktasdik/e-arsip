@@ -74,5 +74,8 @@ class Box extends CI_Model {
       return $Parse . $L;
     }
   }
+  function del($id){
+    $this->db->delete($this->table, array('id' => $id));
+  }
 
 }

@@ -15,7 +15,7 @@ class Rak extends CI_Model {
     return $query;
   }
 
-  function get_record_by_id($id){
+  function get_record_by_id($kode){
     $query = $this->db->get_where($this->table, array('kode' => $kode));
     return $query;
   }
@@ -50,7 +50,7 @@ class Rak extends CI_Model {
       'user_id' => get_session_name('user_id')
     );
 
-    $this->db->where('id', $id);
+    $this->db->where('kode', $id);
     $this->db->update($this->table, $data);
   }
 
@@ -76,6 +76,10 @@ class Rak extends CI_Model {
       }
       return $Parse . $L;
     }
+  }
+
+  function del($kode){
+    $this->db->delete($this->table, array('kode' => $kode));
   }
 
 }
